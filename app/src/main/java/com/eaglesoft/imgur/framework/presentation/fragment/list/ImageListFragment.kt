@@ -13,6 +13,8 @@ import com.eaglesoft.imgur.business.domain.models.Data
 import com.eaglesoft.imgur.business.domain.models.Images
 import com.eaglesoft.imgur.business.domain.state.DataState
 import com.eaglesoft.imgur.business.domain.util.EndlessRecyclerOnScrollListener
+import com.eaglesoft.imgur.framework.presentation.MainActivity
+import com.eaglesoft.imgur.framework.presentation.fragment.details.DetailFragment
 import com.eaglesoft.imgur.framework.presentation.fragment.list.adapter.ImagesItemAdapter
 import com.eaglesoft.imgur.framework.presentation.fragment.list.viewmodel.MainStateEvent.GetUsersEvent
 import com.eaglesoft.imgur.framework.presentation.fragment.list.viewmodel.ImageListViewModel
@@ -140,5 +142,9 @@ constructor(
 
     override fun onImageItemClicked(image: Images?) {
         Toast.makeText(context, image?.link, Toast.LENGTH_SHORT).show()
+        if (activity is MainActivity) {
+            (activity as MainActivity).replaceFragment(DetailFragment(""))
+        }
     }
+
 }
