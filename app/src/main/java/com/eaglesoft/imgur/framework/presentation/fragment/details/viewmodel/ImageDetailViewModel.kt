@@ -32,12 +32,12 @@ class ImageDetailViewModel
     val updateState: LiveData<DataState<Int?>>
         get() = _updateState
 
-    fun getCommentStateEvent(detailEvent: DetailEvent, query: String?) {
+    fun getCommentStateEvent(detailEvent: DetailEvent, imageId: String?) {
         viewModelScope.launch {
             when (detailEvent) {
                 is GetImageEvent -> {
                     if (networkHelper.isNetworkConnected()) {
-                        getImages.getCommentList(query)
+                        getImages.getCommentList(imageId)
                             .onEach { comments ->
                                 _commentState.value = comments
                             }

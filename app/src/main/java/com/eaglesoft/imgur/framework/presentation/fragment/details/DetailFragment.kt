@@ -7,10 +7,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eaglesoft.imgur.R
 import com.eaglesoft.imgur.business.domain.models.Comments
 import com.eaglesoft.imgur.business.domain.state.DataState
+import com.eaglesoft.imgur.framework.presentation.SharedViewModel
 import com.eaglesoft.imgur.framework.presentation.fragment.details.adapter.CommentListAdapter
 import com.eaglesoft.imgur.framework.presentation.fragment.details.viewmodel.DetailEvent
 import com.eaglesoft.imgur.framework.presentation.fragment.details.viewmodel.ImageDetailViewModel
@@ -27,16 +29,20 @@ class DetailFragment constructor(
 
     private val viewModel: ImageDetailViewModel by viewModels()
     private var adapter: CommentListAdapter? = null
+    private var sharedViewModel: SharedViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel = activity?.let { ViewModelProvider(it).get(SharedViewModel::class.java) }
         subscribeObservers()
-        viewModel.getCommentStateEvent(DetailEvent.GetImageEvent, "")
-        initRecyclerView()
+        viewModel.getCommentStateEvent(DetailEvent.GetImageEvent, sharedViewModel?.images?.id)
+        initView()
         Log.d(TAG, "someString: ${someString}")
     }
 
-    private fun initRecyclerView() {
+    private fun initView() {
+        edt_comment.setOnTouchListener(this)
         rv_comment.layoutManager = LinearLayoutManager(context)
         adapter = CommentListAdapter(context)
         rv_comment.adapter = adapter
@@ -63,7 +69,7 @@ class DetailFragment constructor(
             when (it) {
                 is DataState.Success<Int?> -> {
                     displayProgressBar(false)
-                    viewModel.getCommentStateEvent(DetailEvent.GetImageEvent, "")
+                    viewModel.getCommentStateEvent(DetailEvent.GetImageEvent, sharedViewModel?.images?.id)
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
@@ -93,7 +99,7 @@ class DetailFragment constructor(
         val DRAWABLE_RIGHT = 2
         if (event!!.action == MotionEvent.ACTION_UP) {
             if (event.rawX >= edt_comment.right - edt_comment.compoundDrawables[DRAWABLE_RIGHT].bounds.width()) {
-                viewModel.updateImages(DetailEvent.GetImageEvent, images = null)
+                viewModel.updateImages(DetailEvent.GetImageEvent, images = sharedViewModel?.images)
             }
         }
         return false

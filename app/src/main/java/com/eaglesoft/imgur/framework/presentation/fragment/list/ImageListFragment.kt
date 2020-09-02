@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eaglesoft.imgur.R
@@ -14,6 +15,7 @@ import com.eaglesoft.imgur.business.domain.models.Images
 import com.eaglesoft.imgur.business.domain.state.DataState
 import com.eaglesoft.imgur.business.domain.util.EndlessRecyclerOnScrollListener
 import com.eaglesoft.imgur.framework.presentation.MainActivity
+import com.eaglesoft.imgur.framework.presentation.SharedViewModel
 import com.eaglesoft.imgur.framework.presentation.fragment.details.DetailFragment
 import com.eaglesoft.imgur.framework.presentation.fragment.list.adapter.ImagesItemAdapter
 import com.eaglesoft.imgur.framework.presentation.fragment.list.viewmodel.MainStateEvent.GetUsersEvent
@@ -37,9 +39,11 @@ constructor(
 
     private val viewModel: ImageListViewModel by viewModels()
     private var adapter: ImagesItemAdapter? = null
-
+    private var sharedViewModel: SharedViewModel? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel = activity?.let { ViewModelProvider(it).get(SharedViewModel::class.java) }
         subscribeObservers()
         viewModel.setStateEvent(GetUsersEvent, getSearchString(), viewModel._page.value)
         initRecyclerView()
@@ -143,6 +147,7 @@ constructor(
     override fun onImageItemClicked(image: Images?) {
         Toast.makeText(context, image?.link, Toast.LENGTH_SHORT).show()
         if (activity is MainActivity) {
+            (activity as MainActivity).sharedViewModel?.setImage(image)
             (activity as MainActivity).replaceFragment(DetailFragment(""))
         }
     }
