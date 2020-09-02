@@ -1,0 +1,37 @@
+package com.eaglesoft.imgur.framework.datasource.network.model
+
+data class ImageNetworkEntity(
+	val id: String?=null,
+	val title: String? = null,
+	val description: String? = null,
+	val datetime: Int? = null,
+	val type: String? = null,
+	val link: String? = null,
+	val comment_count: String? = null
+	/*,
+    val animated: Boolean,
+    val width: Int,
+    val height: Int,
+    val size: Int,
+    val views: Int,
+    val bandwidth: Int,
+    val vote: String,
+    val favorite: Boolean,
+    val nsfw: String,
+    val section: String,
+    val account_url: String,
+    val account_id: String,
+    val is_ad: Boolean,
+    val in_most_viral: Boolean,
+    val has_sound: Boolean,
+    val tags: List<String>,
+    val ad_type: Int,
+    val ad_url: String,
+    val edited: Int,
+    val in_gallery: Boolean,
+    val favorite_count: String,
+    val ups: String,
+    val downs: String,
+    val points: String,
+    val score: String*/
+)
