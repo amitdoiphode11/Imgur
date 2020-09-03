@@ -117,6 +117,7 @@ class DetailFragment constructor(
         }
     }
 
+
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         val DRAWABLE_RIGHT = 2
         if (event!!.action == MotionEvent.ACTION_UP) {
