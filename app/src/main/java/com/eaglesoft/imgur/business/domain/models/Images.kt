@@ -8,7 +8,7 @@ data class Images(
     val type: String? = null,
     val link: String? = null,
     val comment_count: String? = null,
-    val comment: List<Comments?>? = null
+    var comment: List<Comments?>? = null
     /*,
     val animated: Boolean,
     val width: Int,

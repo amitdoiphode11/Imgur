@@ -48,11 +48,11 @@ class ImageDetailViewModel
         }
     }
 
-    fun updateImages(detailEvent: DetailEvent, images: Images?) {
+    fun addComment(detailEvent: DetailEvent, images: Images?, comments: String) {
         viewModelScope.launch {
             when (detailEvent) {
                 is GetImageEvent -> {
-                    getImages.updateImage(images)
+                    getImages.insertOrUpdateImage(images,comments)
                         .onEach {
                             _updateState.value = it
                         }
@@ -61,7 +61,6 @@ class ImageDetailViewModel
             }
         }
     }
-
 }
 
 sealed class DetailEvent {

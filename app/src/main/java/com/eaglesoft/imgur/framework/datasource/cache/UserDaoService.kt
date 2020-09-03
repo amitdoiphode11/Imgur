@@ -10,5 +10,5 @@ interface UserDaoService {
 
     suspend fun getCommentList(id: String?): String?
 
-    suspend fun update(imagesEntity: ImagesCacheEntity?): Int?
+    suspend fun insertOrUpdate(imagesEntity: ImagesCacheEntity?)
 }

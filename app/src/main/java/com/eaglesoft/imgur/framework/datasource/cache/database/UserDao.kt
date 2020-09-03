@@ -18,7 +18,7 @@ interface UserDao {
     @Query("SELECT comment FROM images where id =:id")
     suspend fun getCommentList(id: String?): String?
 
-    @Update
-    suspend fun update(imagesEntity: ImagesCacheEntity?): Int?
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(imagesEntity: ImagesCacheEntity?)
 
 }

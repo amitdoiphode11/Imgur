@@ -1,6 +1,5 @@
 package com.eaglesoft.imgur.business.interactors
 
-import android.app.DownloadManager
 import android.util.Log
 import com.eaglesoft.imgur.business.data.cache.CacheDataSource
 import com.eaglesoft.imgur.business.data.network.NetworkDataSource
@@ -8,7 +7,6 @@ import com.eaglesoft.imgur.business.domain.models.Comments
 import com.eaglesoft.imgur.business.domain.models.Data
 import com.eaglesoft.imgur.business.domain.models.Images
 import com.eaglesoft.imgur.business.domain.state.DataState
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -38,11 +36,11 @@ constructor(
             }
         }
 
-    fun updateImage(images: Images?): Flow<DataState<Int?>> = flow {
+    fun insertOrUpdateImage(images: Images?, comments: String): Flow<DataState<Int?>> = flow {
         try {
             emit(DataState.Loading)
-            val result = cacheDataSource.update(images)
-            emit(DataState.Success(result))
+            cacheDataSource.insertOrUpdate(images, comments)
+            emit(DataState.Success(1))
         } catch (e: Exception) {
             emit(DataState.Error(e))
             Log.e(TAG, "updateImage: ", e)

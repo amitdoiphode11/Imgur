@@ -20,8 +20,8 @@ constructor(
         return userDao.getCommentList(id)
     }
 
-    override suspend fun update(imagesEntity: ImagesCacheEntity?): Int? {
-        return userDao.update(imagesEntity)
+    override suspend fun insertOrUpdate(imagesEntity: ImagesCacheEntity?) {
+        return userDao.insertOrUpdate(imagesEntity)
     }
 
 

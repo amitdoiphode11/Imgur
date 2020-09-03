@@ -25,8 +25,11 @@ constructor(
         return cacheMapper.commentMapFromEntity(userDaoService.getCommentList(id))
     }
 
-    override suspend fun update(data: Images?): Int? {
-        return userDaoService.update(cacheMapper.mapToEntity(data))
+    override suspend fun insertOrUpdate(data: Images?, comments: String?) {
+        val tempComments: MutableList<Comments> = data?.comment as MutableList<Comments>
+        tempComments.add(Comments(comments.toString()))
+        data.comment = tempComments
+        return userDaoService.insertOrUpdate(cacheMapper.mapToEntity(data))
     }
 
 }

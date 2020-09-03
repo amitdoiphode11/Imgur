@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ImgUr</string>
     <string name="label_enter_comment">Enter comment</string>
+    <string name="error_enter_comment">Please enter the comment</string>
 </resources>

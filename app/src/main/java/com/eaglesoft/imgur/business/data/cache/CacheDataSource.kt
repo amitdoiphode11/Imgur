@@ -11,5 +11,5 @@ interface CacheDataSource {
 
     suspend fun getCommentList(id: String?): List<Comments?>?
 
-    suspend fun update(data: Images?): Int?
+    suspend fun insertOrUpdate(data: Images?,comments: String?)
 }
