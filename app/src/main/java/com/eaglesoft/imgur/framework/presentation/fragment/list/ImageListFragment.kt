@@ -145,7 +145,6 @@ constructor(
     }
 
     override fun onImageItemClicked(image: Images?) {
-        Toast.makeText(context, image?.link, Toast.LENGTH_SHORT).show()
         if (activity is MainActivity) {
             (activity as MainActivity).sharedViewModel?.setImage(image)
             (activity as MainActivity).replaceFragment(DetailFragment(""))

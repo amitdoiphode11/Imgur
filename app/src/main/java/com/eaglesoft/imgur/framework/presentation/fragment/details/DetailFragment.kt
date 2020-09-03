@@ -50,7 +50,7 @@ class DetailFragment constructor(
         adapter = CommentListAdapter(context)
         rv_comment.adapter = adapter
 
-        tv_title.text = sharedViewModel?.images?.title
+        tv_title.text = sharedViewModel?.images?.title ?: sharedViewModel?.images?.link
         iv_image.load(sharedViewModel?.images?.link) {
             crossfade(true)
             error(R.drawable.ic_launcher_background)
@@ -67,7 +67,6 @@ class DetailFragment constructor(
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
-                    displayError(it.exception.message)
                 }
                 is DataState.Loading -> {
                     displayProgressBar(true)

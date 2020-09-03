@@ -42,7 +42,7 @@ constructor() : EntityMapper<ImagesCacheEntity, Images> {
     }
 
     fun commentMapFromEntity(comments: String?): List<Comments?>? {
-        return listOf(Gson().fromJson(comments, Comments::class.java))
+        return Gson().fromJson(comments, Array<Comments>::class.java).toList()
     }
 
 }
