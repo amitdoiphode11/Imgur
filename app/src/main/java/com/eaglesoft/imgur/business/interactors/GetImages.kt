@@ -1,6 +1,10 @@
 package com.eaglesoft.imgur.business.interactors
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.eaglesoft.imgur.business.data.cache.CacheDataSource
 import com.eaglesoft.imgur.business.data.network.NetworkDataSource
 import com.eaglesoft.imgur.business.domain.models.Comments
@@ -35,6 +39,22 @@ constructor(
                 emit(DataState.Error(e))
             }
         }
+
+    private var currentResult: Flow<PagingData<Data>>? = null
+    suspend fun imageData(): Flow<PagingData<Data>> {
+        val lastResult = currentResult
+        if (lastResult != null) return lastResult
+
+        val newResult: Flow<PagingData<Data>> = flow {
+
+            Pager(PagingConfig(pageSize = 50)){
+                networkDataSource.load(PagingSource.LoadParams.Refresh())
+            }
+        }
+
+        currentResult = newResult
+        return newResult
+    }
 
     fun insertOrUpdateImage(images: Images?, comments: String): Flow<DataState<Int?>> = flow {
         try {

@@ -91,6 +91,10 @@ dependencies {
 
     //Coil Image
     implementation 'io.coil-kt:coil:0.12.0'
+
+    //Paging3.0
+    def paging_version = "3.0.0-alpha06"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }
 
 kapt {
