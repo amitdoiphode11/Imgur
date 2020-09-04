@@ -66,32 +66,39 @@ constructor(
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, { dataState ->
             when (dataState) {
-                is DataState.Success<List<Data?>?> -> {
-                    displayProgressBar(false)
-                    setDataItem(dataState.data as MutableList<Data>)
+                is DataState.Loading -> {
+                    rv_user.post { adapter?.addLoaderElement() }
+                    displayProgressBar(true)
                     text.visibility = View.GONE
-
-                    rv_user.post {
-                        adapter?.removeLoaderElement()
+                }
+                is DataState.Success<List<Data?>?> -> {
+                    rv_user.post { adapter?.removeLoaderElement() }
+                    displayProgressBar(false)
+                    if (viewModel._page.value == 1 && dataState.data.isNullOrEmpty()) {
+                        rv_user.visibility = View.GONE
+                        text.visibility = View.VISIBLE
+                    } else {
+                        rv_user.visibility = View.VISIBLE
+                        text.visibility = View.GONE
                     }
-                    viewModel._page.value = viewModel._page.value?.plus(1)
+
+                    setDataItem(dataState.data as MutableList<Data>)
+                    //viewModel._page.value = viewModel._page.value?.plus(1)
                 }
                 is DataState.Error -> {
-                    displayProgressBar(false)
-                    text.visibility = View.VISIBLE
-                    displayError(dataState.exception.message)
-
                     rv_user.post {
                         adapter?.removeLoaderElement()
                         adapter?.addRetryElement()
                     }
+                    displayProgressBar(false)
+                    text.visibility = View.VISIBLE
+                    displayError(dataState.exception.message)
+
                     viewModel._page.value = 0
                 }
-                is DataState.Loading -> {
-                    displayProgressBar(true)
-                    text.visibility = View.GONE
-
-                    rv_user.post { adapter?.addLoaderElement() }
+                else -> {
+                    adapter?.removeLoaderElement()
+                    adapter?.removeRetryElement()
                 }
             }
         })

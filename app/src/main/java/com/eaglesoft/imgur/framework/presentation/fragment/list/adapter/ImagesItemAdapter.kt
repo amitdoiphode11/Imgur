@@ -19,7 +19,6 @@ class ImagesItemAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var dataList: MutableList<Data>? = null
 
-
     init {
         dataList = arrayListOf()
     }
