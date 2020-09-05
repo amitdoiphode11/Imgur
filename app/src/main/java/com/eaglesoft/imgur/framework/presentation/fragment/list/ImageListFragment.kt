@@ -18,6 +18,7 @@ import com.eaglesoft.imgur.framework.presentation.MainActivity
 import com.eaglesoft.imgur.framework.presentation.SharedViewModel
 import com.eaglesoft.imgur.framework.presentation.fragment.details.DetailFragment
 import com.eaglesoft.imgur.framework.presentation.fragment.list.adapter.ImagesItemAdapter
+import com.eaglesoft.imgur.framework.presentation.fragment.list.adapter.ImagesListAdapter
 import com.eaglesoft.imgur.framework.presentation.fragment.list.viewmodel.MainStateEvent.GetUsersEvent
 import com.eaglesoft.imgur.framework.presentation.fragment.list.viewmodel.ImageListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ImageListFragment
 constructor(
     private val someString: String
-) : Fragment(R.layout.fragment_image_list), ImagesItemAdapter.OnItemClick {
+) : Fragment(R.layout.fragment_image_list), ImagesItemAdapter.OnItemClick,
+    ImagesListAdapter.OnItemClick {
 
     private val TAG = "ImageListFragment"
 
@@ -39,6 +41,8 @@ constructor(
 
     private val viewModel: ImageListViewModel by viewModels()
     private var adapter: ImagesItemAdapter? = null
+    private var mAdapter: ImagesListAdapter? = null
+
     private var sharedViewModel: SharedViewModel? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +50,11 @@ constructor(
         sharedViewModel = activity?.let { ViewModelProvider(it).get(SharedViewModel::class.java) }
         subscribeObservers()
         viewModel.setStateEvent(GetUsersEvent, getSearchString(), viewModel._page.value)
-        initRecyclerView()
+        //initRecyclerView()
+        mAdapter = ImagesListAdapter(this)
+        rv_user.layoutManager = GridLayoutManager(context, 3)
+        rv_user.adapter = mAdapter
+
         search_view.setQuery("Shapes", true)
         search_view?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

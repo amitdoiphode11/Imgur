@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     fun replaceFragment(fragment: Fragment) {
         if (fragment.tag == "DetailFragment") {
             if (sharedViewModel?.images != null) {
-                toolbar.title = sharedViewModel?.images?.title
+                toolbar.title = sharedViewModel?.itmages?.title
             }
         }
         supportFragmentManager.fragmentFactory = fragmentFactory

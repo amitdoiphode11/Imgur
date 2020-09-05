@@ -21,8 +21,8 @@ constructor(
         else arrayListOf()
     }
 
-    override suspend fun load(params: PagingSource.LoadParams<Int>): PagingSource.LoadResult<Int, Data> {
-        val position = params.key ?: initialPageIndex
+    override suspend fun load(params: PagingSource.LoadParams<Int>?): PagingSource.LoadResult<Int, Data> {
+        val position = params?.key ?: initialPageIndex
 
         return try {
             val response = apiRetrofitService.get("", position)

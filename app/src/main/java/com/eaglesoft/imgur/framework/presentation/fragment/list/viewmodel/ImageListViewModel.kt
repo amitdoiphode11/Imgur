@@ -31,11 +31,13 @@ constructor(
             when (mainStateEvent) {
                 is GetUsersEvent -> {
                     if (networkHelper.isNetworkConnected()) {
-                        getImages.getOnlineImagesList(query, page)
+                        /*getImages.getOnlineImagesList(query, page)
                             .onEach { dataState ->
                                 _dataState.value = dataState
                             }
-                            .launchIn(viewModelScope)
+                            .launchIn(viewModelScope)*/
+
+                        getImages.imageData()
                     }
                 }
             }

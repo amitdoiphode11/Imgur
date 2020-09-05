@@ -7,5 +7,5 @@ interface NetworkDataSource {
 
     suspend fun get(query: String?,page:Int?): List<Data?>?
 
-    suspend fun load(params: PagingSource.LoadParams<Int>): PagingSource.LoadResult<Int, Data>
+    suspend fun load(params: PagingSource.LoadParams<Int>?): PagingSource.LoadResult<Int, Data>
 }

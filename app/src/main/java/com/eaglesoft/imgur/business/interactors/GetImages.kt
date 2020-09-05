@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.eaglesoft.imgur.business.data.cache.CacheDataSource
 import com.eaglesoft.imgur.business.data.network.NetworkDataSource
+import com.eaglesoft.imgur.business.data.network.NetworkDataSourceImpl
 import com.eaglesoft.imgur.business.domain.models.Comments
 import com.eaglesoft.imgur.business.domain.models.Data
 import com.eaglesoft.imgur.business.domain.models.Images
@@ -40,16 +41,17 @@ constructor(
             }
         }
 
+
     private var currentResult: Flow<PagingData<Data>>? = null
     suspend fun imageData(): Flow<PagingData<Data>> {
         val lastResult = currentResult
         if (lastResult != null) return lastResult
 
         val newResult: Flow<PagingData<Data>> = flow {
-
-            Pager(PagingConfig(pageSize = 50)){
-                networkDataSource.load(PagingSource.LoadParams.Refresh())
-            }
+            Pager(
+                config = PagingConfig(pageSize = 60),
+                pagingSourceFactory = { networkDataSource.load(null) }
+            ).flow
         }
 
         currentResult = newResult
